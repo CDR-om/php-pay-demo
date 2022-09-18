@@ -115,4 +115,30 @@ class Pay{
         
         return $this->curl($url,'post',$data);
     }
+
+    /**
+     * @desc    代收(支付)下单接口
+     */
+    public function pay(
+        $orderId='商户生成的唯一订单号',
+        $userName='平台会员账号',
+        $name='平台会员姓名(支持中文)',
+        $currency='接入通道: cny | yhk1 | yhk2 (详见文档: 接入通道类型)',
+        $money='2.00'
+    ){
+        $url = APP_REQUEST_URL . 'merchant/pay';
+
+        $data = $this->signData([
+            "channel" => APP_CHANNEL,
+            "orderId" => $orderId,
+            "userName" => $userName,
+            "name" => $name,
+            "currency" => $currency,
+            /* 订单金额(需要保留两位小数)  例：2.00，仅支持整数 */
+            "money" => $money,
+            "returnUrl" => APP_RETURN_URL,
+        ]);
+
+        return $this->curl($url,'post',$data);
+    }
 }
